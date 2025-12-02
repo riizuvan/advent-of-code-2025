@@ -12,6 +12,7 @@ itertools = { version = "0.10.3" }
 json = { version = "0.12.4" }
 colored = { version = "2.0.0" }
 dotenv = "0.15.0"
+fancy-regex = "0.16.2"
 
 # libs
 
