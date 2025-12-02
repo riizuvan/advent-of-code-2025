@@ -17,7 +17,7 @@ fn main() -> Result<(), reqwest::Error> {
             (start, end)
         });
 
-    let invalid_id_match = Regex::new(r"^(\d+)\1$").unwrap();
+    let invalid_id_match = Regex::new(r"^(\d+)\1+$").unwrap();
 
     let mut sum = 0;
 
