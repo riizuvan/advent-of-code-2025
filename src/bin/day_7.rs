@@ -3,33 +3,40 @@ use std::collections::HashMap;
 use advent_of_code_2025::fetch_input;
 
 fn beam_search(
-    position: (i32, i32),
+    position: (i64, i64),
     matrix: &Vec<Vec<char>>,
-    split_count: &mut i32,
-    visited: &mut HashMap<(i32, i32), bool>,
-) {
-    let item = matrix
-        .get(position.1 as usize)
-        .and_then(|row| row.get(position.0 as usize));
-
-    if item.is_none() {
-        return;
+    cache: &mut HashMap<(i64, i64), u64>,
+) -> u64 {
+    if cache.contains_key(&position) {
+        return *cache.get(&position).unwrap();
     }
 
-    if visited.contains_key(&position) {
-        return;
+    // overflow down couns as one step after split
+    if position.1 == matrix.len() as i64 {
+        cache.insert(position, 1);
+
+        return 1;
     }
 
-    visited.insert(position, true);
+    // overflow left or right means no space to split
+    if position.0 >= matrix[0].len() as i64 || position.0 < 0 {
+        cache.insert(position, 0);
+
+        return 0;
+    }
+
+    let mut timelines = 0;
 
     if matrix[position.1 as usize][position.0 as usize] != '^' {
-        beam_search((position.0, position.1 + 1), matrix, split_count, visited);
+        timelines = beam_search((position.0, position.1 + 1), matrix, cache);
     } else {
-        *split_count += 1;
-
-        beam_search((position.0 + -1, position.1), matrix, split_count, visited);
-        beam_search((position.0 + 1, position.1), matrix, split_count, visited);
+        timelines += beam_search((position.0 + -1, position.1), matrix, cache);
+        timelines += beam_search((position.0 + 1, position.1), matrix, cache);
     }
+
+    cache.insert(position, timelines);
+
+    timelines
 }
 
 fn main() -> Result<(), reqwest::Error> {
@@ -50,25 +57,23 @@ fn main() -> Result<(), reqwest::Error> {
         }
     }
 
-    let mut start: (i32, i32) = (0, 0);
+    let mut start: (i64, i64) = (0, 0);
 
     for y in 0..matrix.len() {
         for x in 0..matrix[y].len() {
             let item = matrix[y][x];
 
             if item == 'S' {
-                start = (x as i32, y as i32);
+                start = (x as i64, y as i64);
             }
         }
     }
 
-    let mut split_count = 0;
+    let mut cache = HashMap::new();
 
-    let mut visited = HashMap::new();
+    let timelines = beam_search(start, &matrix, &mut cache);
 
-    beam_search(start, &matrix, &mut split_count, &mut visited);
-
-    println!("{}", split_count);
+    println!("{}", timelines);
 
     Ok(())
 }
