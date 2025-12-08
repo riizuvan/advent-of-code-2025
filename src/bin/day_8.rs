@@ -1,7 +1,6 @@
 use std::collections::HashMap;
 
 use advent_of_code_2025::fetch_input;
-use itertools::Itertools;
 
 fn euclidean_distance_3d(a: (u64, u64, u64), b: (u64, u64, u64)) -> f64 {
     let dx = (a.0 as i64 - b.0 as i64) as f64;
@@ -55,7 +54,7 @@ fn main() -> Result<(), reqwest::Error> {
         krugovi.insert(index, vec![*item]);
     }
 
-    for ((a, b), _distance) in distances_vec.iter().take(1000) {
+    for ((a, b), _distance) in distances_vec.iter() {
         let krug_a = krugovi
             .iter()
             .find(|(_k, v)| v.contains(a))
@@ -76,17 +75,14 @@ fn main() -> Result<(), reqwest::Error> {
             krugovi.get_mut(&krug_a).unwrap().push(*item);
         }
 
-        krugovi.get_mut(&krug_b).unwrap().clear();
+        krugovi.remove(&krug_b);
+
+        if krugovi.len() == 1 {
+            println!("{}", a.0 * b.0);
+
+            break;
+        }
     }
-
-    let sorted_sizes = krugovi
-        .values()
-        .filter(|v| !v.is_empty())
-        .map(|v| v.len())
-        .sorted_by(|a, b| b.cmp(a))
-        .collect::<Vec<usize>>();
-
-    println!("{}", sorted_sizes.iter().take(3).product::<usize>());
 
     Ok(())
 }
