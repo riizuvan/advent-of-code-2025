@@ -1,8 +1,5 @@
 use advent_of_code_2025::fetch_input;
-use z3::{
-    ast::{Bool, Int},
-    Optimize, SatResult,
-};
+use z3::{ast::Int, Optimize, SatResult};
 
 #[derive(Debug)]
 struct Machine {
@@ -16,50 +13,45 @@ fn solve_machine(machine: &Machine) -> u64 {
     let opt = Optimize::new();
 
     let n_buttons = machine.buttons.len();
-    let n_lights = machine.target.len();
+    let n_counters = machine.joltage.len();
 
-    // press[b] is a Bool (pressed or not)
-    let press: Vec<Bool> = (0..n_buttons)
-        .map(|i| Bool::new_const(format!("press_{}", i)))
+    // press[b] is an Int (number of times button b is pressed)
+    let press: Vec<Int> = (0..n_buttons)
+        .map(|i| Int::new_const(format!("press_{}", i)))
         .collect();
 
-    // For each light, construct XOR of all press[b] that toggle it
-    for light in 0..n_lights {
-        let mut togglers: Vec<Bool> = Vec::new();
+    // Constrain presses to be non-negative integers
+    let zero = Int::from_u64(0);
+    for p in &press {
+        opt.assert(&p.ge(&zero));
+    }
 
+    // For each counter, the sum of presses of buttons that affect it must equal the target joltage
+    for i in 0..n_counters {
+        let mut terms: Vec<Int> = Vec::new();
         for (b, btn) in machine.buttons.iter().enumerate() {
-            if btn.contains(&light) {
-                togglers.push(press[b].clone());
+            if btn.contains(&i) {
+                terms.push(press[b].clone());
             }
         }
 
-        // XOR chain using Bool::xor
-        let xor_expr = if togglers.is_empty() {
-            Bool::from_bool(false)
-        } else if togglers.len() == 1 {
-            togglers[0].clone()
+        let sum_i = if terms.is_empty() {
+            Int::from_u64(0)
         } else {
-            let mut it = togglers.into_iter();
-            let first = it.next().unwrap();
-            it.fold(first, |acc, b| acc.xor(&b))
+            terms.into_iter().sum::<Int>()
         };
 
-        // Compare XOR result to target bit
-        let target_bool = Bool::from_bool(machine.target[light] == 1);
-        opt.assert(&xor_expr.eq(&target_bool));
+        let target_i = Int::from_u64(machine.joltage[i] as u64);
+        opt.assert(&sum_i.eq(&target_i));
     }
 
-    // Minimize sum of pressed buttons
+    // Minimize total presses
     let sum = Int::new_const("press_sum");
-
-    let mut terms: Vec<Int> = Vec::new();
-    for p in &press {
-        let one = Int::from_u64(1);
-        let zero = Int::from_u64(0);
-        terms.push(p.ite(&one, &zero));
-    }
-
-    let total = terms.into_iter().sum::<Int>();
+    let total = if press.is_empty() {
+        Int::from_u64(0)
+    } else {
+        press.into_iter().sum::<Int>()
+    };
     opt.assert(&sum.eq(&total));
     opt.minimize(&sum);
 
