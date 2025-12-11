@@ -13,6 +13,7 @@ json = { version = "0.12.4" }
 colored = { version = "2.0.0" }
 dotenv = "0.15.0"
 fancy-regex = "0.16.2"
+z3 = "0.19.6"
 
 # libs
 
