@@ -6,8 +6,9 @@ fn count_paths(
     device: &str,
     devices_map: &HashMap<&str, Vec<&str>>,
     visited: &mut HashMap<String, u64>,
+    out: &str,
 ) -> u64 {
-    if device == "out" {
+    if device == out {
         return 1;
     }
 
@@ -19,7 +20,7 @@ fn count_paths(
 
     if let Some(neighbors) = devices_map.get(device) {
         for &neighbor in neighbors {
-            total_paths += count_paths(neighbor, devices_map, visited);
+            total_paths += count_paths(neighbor, devices_map, visited, out);
         }
     }
 
@@ -47,7 +48,11 @@ fn main() -> Result<(), reqwest::Error> {
         devices_map.insert(device, outs);
     }
 
-    let result = count_paths("you", &devices_map, &mut HashMap::new());
+    let svr_fft = count_paths("svr", &devices_map, &mut HashMap::new(), "fft");
+    let fft_dac = count_paths("fft", &devices_map, &mut HashMap::new(), "dac");
+    let dac_out = count_paths("dac", &devices_map, &mut HashMap::new(), "out");
+
+    let result = svr_fft * fft_dac * dac_out;
 
     println!("{}", result);
 
